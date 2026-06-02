@@ -45,8 +45,9 @@ def test_category1(category1, category2):
     assert category1.product_count == 4
     assert category1.category_count == 2
 
-    category2.add_product(Product('LG', 'lorem', 150000.0, 8))
+    category2.add_product(Product("LG", "lorem", 150000.0, 8))
     assert category1.product_count == 5
+
 
 def test_get_products(category2):
     assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.\n' == category2.products

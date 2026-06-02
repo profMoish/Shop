@@ -11,7 +11,7 @@ class Product:
         self.quantity = quantity
 
     @classmethod
-    def new_product(cls, param: dict) -> 'Product':
+    def new_product(cls, param: dict) -> "Product":
         # return Product(param['name'], param['description'], param['price'], param['quantity'])
         return Product(**param)
 
@@ -22,6 +22,6 @@ class Product:
     @price.setter
     def price(self, new_price: float) -> None:
         if new_price <= 0:
-            print('Цена не должна быть нулевая или отрицательная')
+            print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
