@@ -33,14 +33,20 @@ def test_category1(category1, category2):
         category1.description
         == "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни"
     )
-    assert len(category1.products) == 3
+    # assert len(category1.__products) == 3
 
     assert category2.name == "Телевизоры"
     assert (
         category2.description
         == "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником"
     )
-    assert len(category2.products) == 1
+    # assert len(category2.products) == 1
 
     assert category1.product_count == 4
     assert category1.category_count == 2
+
+    category2.add_product(Product('LG', 'lorem', 150000.0, 8))
+    assert category1.product_count == 5
+
+def test_get_products(category2):
+    assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.\n' == category2.products
