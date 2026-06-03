@@ -34,4 +34,15 @@ def test_product2(product2) -> None:
     assert product2.quantity == 5
 
 
-# @pytest.mark.parametrize('product1, product2', [])
+def test_str_product(product1, product2, capsys) -> None:
+    assert str(product1) == "Iphone 15, 210000.0 руб. Остаток: 8 шт."
+    print(product1)
+    assert capsys.readouterr().out == "Iphone 15, 210000.0 руб. Остаток: 8 шт.\n"
+
+    assert str(product2) == "Iphone 14, 150000.0 руб. Остаток: 5 шт."
+    print(product2)
+    assert capsys.readouterr().out == "Iphone 14, 150000.0 руб. Остаток: 5 шт.\n"
+
+
+def test_add_product(product1, product2) -> None:
+    assert product1 + product2 == 210000 * 8 + 150000 * 5

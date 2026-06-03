@@ -51,3 +51,13 @@ def test_category1(category1, category2):
 
 def test_get_products(category2):
     assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.\n' == category2.products
+
+
+def test_str_category(category1, category2, capsys):
+    # Название категории, количество продуктов: 200 шт.
+    assert str(category1) == "Смартфоны, количество продуктов: 27 шт."
+    assert str(category2) == "Телевизоры, количество продуктов: 7 шт."
+    print(category1)
+    assert capsys.readouterr().out == "Смартфоны, количество продуктов: 27 шт.\n"
+    print(category2)
+    assert capsys.readouterr().out == "Телевизоры, количество продуктов: 7 шт.\n"
