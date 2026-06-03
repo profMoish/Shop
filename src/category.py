@@ -24,5 +24,11 @@ class Category:
         # Название продукта, 80 руб. Остаток: 15 шт.
         r = ""
         for product in self.__products:
-            r += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            r += f"{product}\n"
         return r
+
+    def __str__(self) -> str:
+        count = 0
+        for product in self.__products:
+            count += product.quantity
+        return f"{self.name}, количество продуктов: {count} шт."
