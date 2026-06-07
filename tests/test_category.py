@@ -1,7 +1,7 @@
 import pytest
 
 from src.category import Category
-from src.product import Product
+from src.product import Product, Smartphone, LawnGrass
 
 
 @pytest.fixture
@@ -48,6 +48,19 @@ def test_category1(category1, category2):
     category2.add_product(Product("LG", "lorem", 150000.0, 8))
     assert category1.product_count == 5
 
+    with pytest.raises(TypeError):
+        category2.add_product(10)
+
+    assert Category.product_count == 5
+
+    category2.add_product(Smartphone('iPhone', 'lorem', 150000.0, 8, 15, '15', 512, 'Grey'))
+
+    assert Category.product_count == 6
+
+    category2.add_product(LawnGrass("iLawnGrass", 'lorem ipsum', 1000, 100,
+                     'USA', 50, 'green'))
+
+    assert Category.product_count == 7
 
 def test_get_products(category2):
     assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.\n' == category2.products
