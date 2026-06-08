@@ -1,6 +1,5 @@
 from src.product import Product
-from src.product import Smartphone
-from src.product import LawnGrass
+
 
 class Category:
     name: str
@@ -21,7 +20,7 @@ class Category:
             self.__products.append(product)
             Category.product_count += 1
         else:
-            raise TypeError('Добавлять можно объекты (товары) только класса продуктов.')
+            raise TypeError("Добавлять можно объекты (товары) только класса продуктов.")
 
     @property
     def products(self) -> str:

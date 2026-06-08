@@ -1,16 +1,41 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+
+    @abstractmethod
+    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+        super().__init__()
+
+    @classmethod
+    @abstractmethod
+    def new_product(cls, param: dict) -> "Product":
+        pass
+
+
+class Log:
+
+    def __init__(self, *args, **kwargs):
+        print(repr(self), args, kwargs)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}"
+
+
+class Product(BaseProduct, Log):
     name: str
     description: str
     __price: float
     quantity: int
     color: str
 
-    def __init__(self, name: str, description: str, price: float, quantity: int, color:str=None) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, color: str = None) -> None:
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
         self.color = color
+        super().__init__(name, description, price, quantity)
 
     @classmethod
     def new_product(cls, param: dict) -> "Product":
@@ -40,33 +65,50 @@ class Smartphone(Product):
     model: str
     memory: int
 
-
-    def __init__(self, name: str, description: str, price: float, quantity: int,
-                 efficiency: float, model: str, memory: int, color: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
         super().__init__(name, description, price, quantity, color)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
 
     def __add__(self, other) -> float:
-        if type(other) == self.__class__:
+        if type(other) is self.__class__:
             return super().__add__(other)
         else:
             raise TypeError
 
+
 class LawnGrass(Product):
-    country: str # страна-производитель
-    germination_period: int # срок прорастания
+    country: str  # страна-производитель
+    germination_period: int  # срок прорастания
     color: str
 
-    def __init__(self, name: str, description: str, price: float, quantity: int,
-                 country: str, germination_period: int, color: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: int,
+        color: str,
+    ) -> None:
         super().__init__(name, description, price, quantity, color)
         self.country = country
         self.germination_period = germination_period
 
     def __add__(self, other) -> float:
-        if type(other) == self.__class__:
+        if type(other) is self.__class__:
             return super().__add__(other)
         else:
             raise TypeError

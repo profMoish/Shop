@@ -1,8 +1,7 @@
 import pytest
 
-from src.product import Product
-from src.product import Smartphone
-from src.product import LawnGrass
+from src.product import BaseProduct, LawnGrass, Log, Product, Smartphone
+
 
 @pytest.fixture
 def product1() -> Product:
@@ -15,16 +14,23 @@ def product2() -> Product:
         {"name": "Iphone 14", "description": "512GB, Gray space", "price": 150000.0, "quantity": 5}
     )
 
+
 @pytest.fixture
 def smartphone() -> Smartphone:
-    return Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8,
-                      5, '15', 512, 'Gray space')
+    return Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 5, "15", 512, "Gray space")
 
 
 @pytest.fixture
 def lawngrass() -> LawnGrass:
-    return LawnGrass("iLawnGrass", 'lorem ipsum', 1000, 100,
-                     'USA', 50, 'green')
+    return LawnGrass("iLawnGrass", "lorem ipsum", 1000, 100, "USA", 50, "green")
+
+
+@pytest.fixture
+def base_product2() -> BaseProduct:
+    return ConcreteBaseProduct.new_product(
+        {"name": "Iphone 14", "description": "512GB, Gray space", "price": 150000.0, "quantity": 5}
+    )
+
 
 def test_product1(product1, capsys) -> None:
     assert product1.name == "Iphone 15"
@@ -58,24 +64,27 @@ def test_str_product(product1, product2, capsys) -> None:
 def test_add_product(product1, product2) -> None:
     assert product1 + product2 == 210000 * 8 + 150000 * 5
 
+
 def test_smartphone(smartphone) -> None:
     assert smartphone.name == "Iphone 15"
     assert smartphone.description == "512GB, Gray space"
     assert smartphone.price == 210000.0
     assert smartphone.quantity == 8
     assert smartphone.efficiency == 5
-    assert smartphone.model == '15'
+    assert smartphone.model == "15"
     assert smartphone.memory == 512
-    assert smartphone.color == 'Gray space'
+    assert smartphone.color == "Gray space"
+
 
 def test_lawngrass(lawngrass) -> None:
     assert lawngrass.name == "iLawnGrass"
     assert lawngrass.description == "lorem ipsum"
     assert lawngrass.price == 1000
     assert lawngrass.quantity == 100
-    assert lawngrass.country == 'USA'
+    assert lawngrass.country == "USA"
     assert lawngrass.germination_period == 50
-    assert lawngrass.color == 'green'
+    assert lawngrass.color == "green"
+
 
 def test_smartphone_add_lawngrass(smartphone, lawngrass) -> None:
     with pytest.raises(TypeError):
@@ -84,3 +93,21 @@ def test_smartphone_add_lawngrass(smartphone, lawngrass) -> None:
         lawngrass + smartphone
     assert smartphone + smartphone == 3360000
     assert lawngrass + lawngrass == 200000
+
+
+class ConcreteBaseProduct(Log, BaseProduct):
+
+    def __init__(self, name: str, description: str, price: float, quantity: int):
+        super().__init__(name, description, price, quantity)
+        pass
+
+    @classmethod
+    def new_product(cls, param: dict) -> "Product":
+        super().new_product(param)
+        # return Product(param['name'], param['description'], param['price'], param['quantity'])
+        return Product(**param)
+
+
+def test_base_product(base_product2, capsys) -> None:
+    ConcreteBaseProduct("iPhone 15", "512GB, Gray space", 210000.0, 8)
+    assert capsys.readouterr().out == "ConcreteBaseProduct ('iPhone 15', '512GB, Gray space', 210000.0, 8) {}\n"
