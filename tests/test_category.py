@@ -1,7 +1,7 @@
 import pytest
 
 from src.category import Category
-from src.product import Product
+from src.product import LawnGrass, Product, Smartphone
 
 
 @pytest.fixture
@@ -48,6 +48,37 @@ def test_category1(category1, category2):
     category2.add_product(Product("LG", "lorem", 150000.0, 8))
     assert category1.product_count == 5
 
+    with pytest.raises(TypeError):
+        category2.add_product(10)
+
+    assert Category.product_count == 5
+
+    category2.add_product(Smartphone("iPhone", "lorem", 150000.0, 8, 15, "15", 512, "Grey"))
+
+    assert Category.product_count == 6
+
+    category2.add_product(LawnGrass("iLawnGrass", "lorem ipsum", 1000, 100, "USA", 50, "green"))
+
+    assert Category.product_count == 7
+
 
 def test_get_products(category2):
     assert '55" QLED 4K, 123000.0 руб. Остаток: 7 шт.\n' == category2.products
+
+
+def test_str_category(category1, category2, capsys):
+    # Название категории, количество продуктов: 200 шт.
+    assert str(category1) == "Смартфоны, количество продуктов: 27 шт."
+    assert str(category2) == "Телевизоры, количество продуктов: 7 шт."
+    print(category1)
+    assert capsys.readouterr().out == "Смартфоны, количество продуктов: 27 шт.\n"
+    print(category2)
+    assert capsys.readouterr().out == "Телевизоры, количество продуктов: 7 шт.\n"
+
+
+def test_average_products(category1, category2):
+    assert category1.average() == 9
+    assert category2.average() == 7
+
+    category3 = Category("iPad", "lorem", [])
+    assert category3.average() == 0
