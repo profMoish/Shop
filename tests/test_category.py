@@ -74,3 +74,11 @@ def test_str_category(category1, category2, capsys):
     assert capsys.readouterr().out == "Смартфоны, количество продуктов: 27 шт.\n"
     print(category2)
     assert capsys.readouterr().out == "Телевизоры, количество продуктов: 7 шт.\n"
+
+
+def test_average_products(category1, category2):
+    assert category1.average() == 9
+    assert category2.average() == 7
+
+    category3 = Category("iPad", "lorem", [])
+    assert category3.average() == 0

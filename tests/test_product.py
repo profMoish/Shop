@@ -111,3 +111,8 @@ class ConcreteBaseProduct(Log, BaseProduct):
 def test_base_product(base_product2, capsys) -> None:
     ConcreteBaseProduct("iPhone 15", "512GB, Gray space", 210000.0, 8)
     assert capsys.readouterr().out == "ConcreteBaseProduct ('iPhone 15', '512GB, Gray space', 210000.0, 8) {}\n"
+
+
+def test_value_error() -> None:
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("iPhone 15", "512GB, Gray space", 210000.0, 0)

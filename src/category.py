@@ -35,3 +35,13 @@ class Category:
         for product in self.__products:
             count += product.quantity
         return f"{self.name}, количество продуктов: {count} шт."
+
+    def average(self):
+        count = 0
+        for product in self.__products:
+            count += product.quantity
+
+        try:
+            return count / len(self.__products)
+        except ZeroDivisionError:
+            return 0

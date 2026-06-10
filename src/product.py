@@ -30,6 +30,8 @@ class Product(BaseProduct, Log):
     color: str
 
     def __init__(self, name: str, description: str, price: float, quantity: int, color: str = None) -> None:
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price
